@@ -1,0 +1,56 @@
+name: "test-html"
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  scan-image:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: before trivy
+        run: |-
+          echo "pwd @runner"
+          pwd
+          echo "echo ~ @runner"
+          echo ~
+          echo "ls -l ../"
+          ls -l ../
+          echo "env @runner"
+          env
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          # pwd=$RUNNER_WORKSPACE/アクション名
+          path: .cache/trivy
+          # イメージ固有のkey名に設定
+          # key=trivy-cache-<イメージ名>:<タグ名>
+          key: trivy-cache-aquasec/trivy:0.35.0
+          # keyに対応するキャッシュが見つからない場合
+          # タグ違いの同一イメージのキャッシュ、
+          # その他イメージのキャッシュを探索。
+          restore-keys: |
+            trivy-cache-aquasec/trivy
+            trivy-cache-
+      - uses: kazuo278/trivy-action@main
+        with:
+          image_name: aquasec/trivy
+          image_tag: 0.35.0
+          trivy_username: ${{ secrets.PULL_ID }}
+          trivy_password: ${{ secrets.PULL_SECRET }}
+          security_chceks: vuln
+          exit_code: 0
+          format: template
+          template: "@/contrib/html.tpl"
+          output: result.html
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          timeout: 10m
+          needs_display: false
+      - name: after trivy
+        run: |-
+          echo "ls -la @runner"
+          ls -la
+      - name: Upload report to artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: trivy-image-report
+          path: result.html

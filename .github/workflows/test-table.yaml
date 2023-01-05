@@ -1,0 +1,20 @@
+name: "test-table"
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  scan-image:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: kazuo278/trivy-action@main
+        with:
+          image_name: aquasec/trivy
+          image_tag: 0.31.1
+          trivy_username: ${{ secrets.PULL_ID }}
+          trivy_password: ${{ secrets.PULL_SECRET }}
+          security_chceks: vuln
+          exit_code: 1
+          format: table
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          timeout: 10m

@@ -1,0 +1,62 @@
+name: 'image scan by trivy'
+description: 'Trivyを利用した イメージスキャン'
+inputs:
+  image_name:
+    description: 'イメージ名'
+    required: true
+  image_tag:
+    description: 'イメージタグ'
+    required: true
+  trivy_username:
+    description: 'プライベートリポジトリのユーザ名'
+    required: false
+  trivy_password:
+    description: 'プライベートリポジトリのパスワード'
+    required: false
+  security_chceks:
+    description: 'カンマ区切りした検査対象リスト(vuln,config,secert,license)'
+    required: false
+    default: 'vuln,secret'
+  exit_code:
+    description: |-
+      セキュリティの問題が見つかった場合の終了コード値
+      正常終了として扱う場合: 0
+      異常終了として扱う場合: 1
+    required: false
+    default: '0'
+  format:
+    description: 'フォーマット(table,json,template)'
+    required: false
+    default: 'table'
+  template:
+    description: |-
+      フォーマットにtemplateを指定した場合に利用する
+      デフォルトテンプレートは以下の通り。
+      - html: /contrib/html.tpl
+      - xml: /contrib/junit.tpl
+    required: false
+  output:
+    description: 'outputファイル名'
+    required: false
+    default: 'trivy-image-report.log'
+  severity:
+    description: 'カンマ区切りした表示するセキュリティ重要度のリスト(UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL)'
+    required: false
+    default: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+  timeout:
+    description: 'タイムアウト値'
+    required: false
+    default: '5m'
+  needs_display:
+    description: |-
+      コンソール出力有無
+      true: 出力有り
+      false: 出力無し
+    required: false
+    default: 'true'
+  options:
+    description: 'Trivy Image 実行オプション'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
