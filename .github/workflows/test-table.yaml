@@ -18,3 +18,7 @@ jobs:
           format: table
           severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
           timeout: 10m
+        env:
+          custom_env1: "CUSTOM-ENV1"
+          CUSTOM_ENV2: "CUSTOM-ENV2"
+ 
