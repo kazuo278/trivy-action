@@ -1,6 +1,5 @@
 name: "test-table"
 on:
-  push:
   workflow_dispatch:
 jobs:
   scan-image:
@@ -18,6 +17,7 @@ jobs:
           format: table
           severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
           timeout: 10m
+          options: "--quiet --debug"
         env:
           custom_env1: "CUSTOM-ENV1"
           CUSTOM_ENV2: "CUSTOM-ENV2"

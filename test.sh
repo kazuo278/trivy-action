@@ -1,0 +1,18 @@
+#!/bin/bash
+
+INPUT_TIMEOUT=$1
+INPUT_OPTIONS=$2
+
+echo "INPUT_TIMEOUT=$INPUT_TIMEOUT"
+echo "INPUT_OPTIONS=$INPUT_OPTIONS"
+
+## --timeout
+if [ -n $INPUT_TIMEOUT ]; then
+  OPTION="$OPTION $INPUT_TIMEOUT"
+fi
+## その他オプション
+if [ -n "$INPUT_OPTIONS" ]; then
+  OPTION="$OPTION $INPUT_OPTIONS"
+fi
+
+exec ls $OPTION

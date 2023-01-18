@@ -53,7 +53,7 @@ if [ -n $INPUT_TIMEOUT ]; then
   OPTION="$OPTION --timeout=$INPUT_TIMEOUT"
 fi
 ## その他オプション
-if [ -n $INPUT_OPTIONS ]; then
+if [ -n "$INPUT_OPTIONS" ]; then
   OPTION="$OPTION $INPUT_OPTIONS"
 fi
 ## 固定値 --cache-dir
